@@ -73,6 +73,17 @@ spec:
           timeoutSeconds: 10
           successThreshold: 1
           failureThreshold: 30
+        # A minimum request that lets the control plane schedule and start. No
+        # limits are set, so the container can grow beyond this under load.
+        #
+        # This is only the *initial* request. CPO deliberately preserves the live
+        # requests of an existing Deployment on reconcile (see
+        # support/controlplane-component/controlplane-component.go), so changing
+        # this value does not resize control planes that already exist. Right-sizing
+        # for a specific environment is done with the
+        # resource-request-override.hypershift.openshift.io annotation or with a VPA
+        # on the management cluster; see
+        # docs/content/how-to/cluster-sizing-guidance.md.
         resources:
           requests:
             cpu: 100m
